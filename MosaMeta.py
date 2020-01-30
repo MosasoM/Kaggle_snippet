@@ -10,28 +10,16 @@ class MosaAbstTrans(metaclass = ABCMeta):
     def transform(self,x,y):
         pass
     
-class MosaAbstStackWrap(metaclass = ABCMeta):
-    @abstractmethod
-    def fit_transform_train(self,x,y):
-        pass
-    
-    @abstractmethod
-    def transform_test(self,x):
-        pass
-    
-    @abstractmethod
-    def reset_model(self):
-        pass
     
 class MosaAbstStackModel(metaclass = ABCMeta):
     @abstractmethod
-    def fit_transform_train(self,x,y):
+    def fit(self,x,y):
         pass
     
     @abstractmethod
-    def transform_test(self,x):
+    def predict(self,x):
         pass
     
     @abstractmethod
-    def reset_model(self):
+    def reset(self):
         pass
