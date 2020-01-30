@@ -4,15 +4,23 @@ import pandas as pd
 from MosaMeta import MosaAbstStackModel
 
 class MosaLabelMeanModel(MosaAbstStackModel):
-    def __init__(self,label_col):
+    def __init__(self,label_col,k=0,f=1):
         self.lab2mean = {}
         self.label_col = label_col
+        self.k = k
+        self.f = f
+       
+    def smoothing_func(self,x,k,f):
+        return 1/(1+np.exp((k-x)/f))
     
     def fit(self,x,y):
         min_df = pd.concat([x[self.label_col],y],axis = 1)
         min_df.columns = ["label","tar"]
+        smooth_second_term = min_df["tar"].mean()
+        total = min_df["tar"].count()
         for name,g in min_df.groupby("label"):
-            self.lab2mean[name] = g["tar"].mean()
+            smooth_coef = self.smoothing_func(g["tar"].count(),self.k,self.f)
+            self.lab2mean[name] = smooth_coef*g["tar"].mean()+(1-smooth_coef)*smooth_second_term
             
     def predict(self,x):
         return list(map(lambda l:self.lab2mean[l],x[self.label_col].values))
