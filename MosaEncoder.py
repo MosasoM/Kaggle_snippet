@@ -31,4 +31,25 @@ class MosaLabelEncoder(MosaAbstTrans):
             temp_dic = {self.target+"isnan":isnan}
             hoge = hoge.assign(**temp_dic)
         return hoge
-    
+
+class MosaOneHotEncoder(MosaAbstTrans):
+    def __init__(self,target_col,asname_base=None):
+        self.tar_col = target_col
+        if asname_base:
+            self.asname_base = asname_base
+        else:
+            self.asname_base = target_col+"_OH"
+        self.cat_num = 0
+        
+    def fit(self,x,y):
+        self.cat_num = x[self.target_col].max()
+        
+    def transform(self,x):
+        buf = np.zeros((len(x.values),self.cat_num))
+        for i,val in enumerate(x[self.tar_col].values):
+            if val != -1:
+                buf[i][val-1] = 1
+        t_df = pd.DataFrame(buf)
+        t_df.columns = [self.asname_base+str(i+1) for i in range(self.cat_num)]
+        
+        return pd.concat([x,t_df],axis=1)

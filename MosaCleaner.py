@@ -20,7 +20,21 @@ class MosaStatsNumericNanfiller:
         hoge = x.assign(**temp_dic)
         return hoge.fillna({self.tar_col:self.stuff})
     
-# class predictive_nanfiller:
-    
+class MosaPredNanfiller:
+    def __init__(self,feature_cols,target_col,model):
+        self.model = model
+        self.target_col = target_col
+        self.feature_cols = feature_cols
+        
+    def fit(self,x,y):
+        valid = x[x[self.tar_col].notna()]
+        self.model.fit(valid[self.feature_cols],valid[self.target_col])
+        
+    def transform(self,x):
+        invalid = x[x[self.tar_col].isna()] 
+        pred = self.model.predict(invalid[self.feature_cols])
+        hoge = x
+        hoge[x[self.tar_col].isna()] = pred
+        return hoge
             
         
