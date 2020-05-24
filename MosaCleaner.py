@@ -13,6 +13,7 @@ class MosaStatsNumericNanfiller:
         elif self.filltype == "mean":
             rep_mean = x[self.tar_col].mean()
             self.stuff = rep_mean
+        return self
     def transform(self,x):
         isnan = np.zeros(len(x.values))
         isnan(x[self.tar_col].isna()) = 1
@@ -29,6 +30,7 @@ class MosaPredNanfiller:
     def fit(self,x,y):
         valid = x[x[self.tar_col].notna()]
         self.model.fit(valid[self.feature_cols],valid[self.target_col])
+        return self
         
     def transform(self,x):
         invalid = x[x[self.tar_col].isna()] 

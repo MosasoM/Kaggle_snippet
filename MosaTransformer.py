@@ -8,6 +8,7 @@ class MosaStandardScaler(MosaAbstTrans):
     def fit(self,x):
         val = x[self.tar_cols]
         self.model.fit(val)
+        return self
     
     def transform(self,x,y):
         tf = self.model.transform(x[self.tar_cols])
@@ -25,6 +26,7 @@ class MosaMinMaxScaler(MosaAbstTrans):
     def fit(self,x):
         val = x[self.tar_cols]
         self.model.fit(val)
+        return self
     
     def transform(self,x,y):
         tf = self.model.transform(x[self.tar_cols])
@@ -43,6 +45,7 @@ class MosaClipper(MosaAbstTrans):
     def fit(self,x):
         val = x[self.tar_cols]
         self.lower,self.upper = np.percentile(val,[1,99],axis=0)
+        return self
     
     def transform(self,x,y):
         tf = x[self.tar_cols].clip(self.lower,self.upper,axis=1)
