@@ -51,7 +51,7 @@ class MosaInserter:
                     if ",".join(map(str,val)) in tdata:
                         buf[i][j] = tdata[",".join(map(str,val))][col]
                     else:
-                        buf[i][j] = -1
+                        buf[i][j] = 0
             df = pd.DataFrame(buf)
             df.columns = [self.bname+col for col in self.cols]
             df = df.reset_index(drop=True)

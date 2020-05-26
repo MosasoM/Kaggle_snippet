@@ -8,6 +8,16 @@ class MosaDropper:
         return self
     def transform(self,x):
         return x.drop(self.dpcol,axis=1)
+    
+class MosaDtypeFixer:
+    def __init__(self,tars):
+        self.tars = tars
+    def fit(self,x,y):
+        return self
+    def transform(self,x):
+        
+        return x.astype({name:"float32" for name in self.tars})
+        
 
 class MosaStatsNumericNanfiller:
     def __init__(self,tar_col,filltype="outliner"):

@@ -4,9 +4,8 @@ import pandas as pd
 
 
 class MosaCross(MosaAbstTrans):
-    def __init__(self,name,tar1,tar2,func):
-        self.tar1 = tar1
-        self.tar2 = tar2
+    def __init__(self,name,tars,func):
+        self.tars = tars
         self.func = func
         self.name = name
         
@@ -14,11 +13,10 @@ class MosaCross(MosaAbstTrans):
         return self
     
     def transform(self,x):
-        td1 = x[self.tar1].values
-        td2 = x[self.tar2].values
-        buf = np.zeros(len(td1))
-        for i in range(len(td1)):
-            buf[i] = self.func(td1[i],td2[i])
+        td = x[self.tars].values
+        buf = np.zeros(len(td))
+        for i in range(len(td)):
+            buf[i] = self.func(*td[i])
         tx = x.assign(hoge=buf)
         hoge = list(tx.columns)
         hoge[-1] = self.name
