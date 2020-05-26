@@ -78,5 +78,6 @@ class MosaOneHotEncoder(MosaAbstTrans):
                 buf[i][val-1] = 1
         t_df = pd.DataFrame(buf)
         t_df.columns = [self.asname_base+str(i+1) for i in range(self.cat_num)]
-        
-        return pd.concat([x,t_df],axis=1)
+        t_df = t_df.reset_index(drop=True)
+        xt = x.reset_index(drop=True)
+        return pd.concat([xt,t_df],axis=1)

@@ -1,4 +1,13 @@
 import numpy as np
+import pandas as pd
+
+class MosaDropper:
+    def __init__(self,drop):
+        self.dpcol = drop
+    def fit(self,x,y):
+        return self
+    def transform(self,x):
+        return x.drop(self.dpcol,axis=1)
 
 class MosaStatsNumericNanfiller:
     def __init__(self,tar_col,filltype="outliner"):
@@ -16,7 +25,7 @@ class MosaStatsNumericNanfiller:
         return self
     def transform(self,x):
         isnan = np.zeros(len(x.values))
-        isnan(x[self.tar_col].isna()) = 1
+        isnan[x[self.tar_col].isna()] = 1
         temp_dic = {self.tar_col+"_isNan":isnan}
         hoge = x.assign(**temp_dic)
         return hoge.fillna({self.tar_col:self.stuff})
