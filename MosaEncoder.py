@@ -16,7 +16,7 @@ class MosaDateTimeEncoder(MosaAbstTrans):
         lgt = len(x[self.target].values[0].split(self.sep))
         base = np.zeros((len(x.values),lgt))
         for i in range(len(x.values)):
-            for j,val in enumerate(map(int,x[self.target].values[i].split(self.sep))):
+            for j,val in enumerate(map(int,tar[i].split(self.sep))):
                 base[i][j] = val
         cols = [self.basename+str(i) for i in range(lgt)]
         df = pd.DataFrame(base)
